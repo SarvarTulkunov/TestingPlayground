@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(grep -h \"^\\\\s*\\\\\\(Given\\\\|When\\\\|Then\\\\|And\\\\|But\\\\\\)\" src/test/resources/features/*.feature)",
+      "Bash(grep -h \"@Given\\\\|@When\\\\|@Then\\\\|@And\\\\|@But\" src/test/java/org/example/steps/*.java)",
+      "Bash(mvn test-compile:*)",
+      "Bash(java -version)"
+    ]
+  }
+}
