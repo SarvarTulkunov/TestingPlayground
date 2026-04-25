@@ -184,7 +184,8 @@ public class AdminPage extends BasePage {
 
     public void clickAdd() {
         wait.until(ExpectedConditions.elementToBeClickable(addButton)).click();
-        wait.until(ExpectedConditions.visibilityOfElementLocated(userRoleDropdown));
+        // passwordField only exists on the Add User form, never on the list page
+        wait.until(ExpectedConditions.visibilityOfElementLocated(passwordField));
     }
 
     public void fillUserRole(String role) {

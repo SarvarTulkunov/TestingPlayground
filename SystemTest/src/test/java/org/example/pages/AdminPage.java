@@ -102,7 +102,10 @@ public class AdminPage {
 
     public void clickAdd() {
         wait.until(ExpectedConditions.elementToBeClickable(addButton)).click();
-        wait.until(ExpectedConditions.visibilityOfElementLocated(userRoleDropdown));
+        // passwordField only exists on the Add User form, never on the list page
+        By passwordField = By.xpath(
+                "//label[normalize-space()='Password']/ancestor::div[contains(@class,'oxd-input-group')]//input[@type='password']");
+        wait.until(ExpectedConditions.visibilityOfElementLocated(passwordField));
     }
 
     public void fillUserRole(String role) {
