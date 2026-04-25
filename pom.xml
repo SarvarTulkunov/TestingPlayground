@@ -13,6 +13,7 @@
         <module>UnitTest</module>
         <module>SystemTest</module>
         <module>CucumberTest</module>
+        <module>ApiTesting</module>
     </modules>
 
     <properties>
