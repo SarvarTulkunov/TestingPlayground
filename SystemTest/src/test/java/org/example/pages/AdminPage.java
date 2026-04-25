@@ -102,6 +102,7 @@ public class AdminPage {
 
     public void clickAdd() {
         wait.until(ExpectedConditions.elementToBeClickable(addButton)).click();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(userRoleDropdown));
     }
 
     public void fillUserRole(String role) {

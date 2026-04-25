@@ -6,8 +6,8 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.example.pages.AdminPage;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.testng.AssertJUnit.assertFalse;
+import static org.testng.AssertJUnit.assertTrue;
 
 /**
  * Cucumber step definitions for Feature 2, Tasks 2.1 and 2.2.

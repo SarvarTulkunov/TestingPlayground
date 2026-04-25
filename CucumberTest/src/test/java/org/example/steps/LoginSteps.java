@@ -7,8 +7,8 @@ import io.cucumber.java.en.When;
 import org.example.pages.DashboardPage;
 import org.example.pages.LoginPage;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertTrue;
 
 /**
  * Cucumber step definitions for Feature 1: Login.

@@ -6,7 +6,8 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.example.systempom.pages.AdminPage;
 
-import static org.junit.Assert.assertTrue;
+import static org.testng.AssertJUnit.assertTrue;
+
 
 /**
  * Cucumber step definitions for Admin / System Users scenarios.

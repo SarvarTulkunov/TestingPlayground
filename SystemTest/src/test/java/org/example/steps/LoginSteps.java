@@ -11,7 +11,8 @@ import org.example.pages.LoginPage;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
-import static org.junit.Assert.*;
+import static org.testng.Assert.assertEquals;
+import static org.testng.AssertJUnit.assertTrue;
 
 public class LoginSteps {
 

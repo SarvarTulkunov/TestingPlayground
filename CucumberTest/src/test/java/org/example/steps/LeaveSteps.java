@@ -9,7 +9,7 @@ import org.example.pages.LeavePage;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-import static org.junit.Assert.assertTrue;
+import static org.testng.AssertJUnit.assertTrue;
 
 /**
  * Cucumber step definitions for Feature 2, Task 2.3: Leave Management.

@@ -18,7 +18,7 @@
         <selenium.version>4.19.1</selenium.version>
         <cucumber.version>7.17.0</cucumber.version>
         <webdrivermanager.version>5.8.0</webdrivermanager.version>
-        <junit.version>4.13.2</junit.version>
+        <testng.version>7.10.2</testng.version>
     </properties>
 
     <dependencies>
@@ -46,16 +46,16 @@
         </dependency>
         <dependency>
             <groupId>io.cucumber</groupId>
-            <artifactId>cucumber-junit</artifactId>
+            <artifactId>cucumber-testng</artifactId>
             <version>${cucumber.version}</version>
             <scope>test</scope>
         </dependency>
 
-        <!-- JUnit 4 (required by cucumber-junit) -->
+        <!-- TestNG -->
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>${junit.version}</version>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <version>${testng.version}</version>
             <scope>test</scope>
         </dependency>
 

@@ -1,16 +1,8 @@
 package org.example.systempom.runners;
 
-import io.cucumber.junit.Cucumber;
-import io.cucumber.junit.CucumberOptions;
-import org.junit.runner.RunWith;
+import io.cucumber.testng.AbstractTestNGCucumberTests;
+import io.cucumber.testng.CucumberOptions;
 
-/**
- * Cucumber runner for the POM-based system test suite.
- * Points to the same feature files as the original runner but wires up
- * the new org.example.systempom.steps glue package so that all step
- * definitions use the Page Object Model classes.
- */
-@RunWith(Cucumber.class)
 @CucumberOptions(
         features = "src/test/resources/features",
         glue     = "org.example.systempom.steps",
@@ -21,5 +13,5 @@ import org.junit.runner.RunWith;
         },
         monochrome = true
 )
-public class PomCucumberRunner {
+public class PomCucumberRunner extends AbstractTestNGCucumberTests {
 }

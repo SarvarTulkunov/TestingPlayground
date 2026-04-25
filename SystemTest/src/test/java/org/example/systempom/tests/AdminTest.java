@@ -1,12 +1,13 @@
 package org.example.systempom.tests;
 
+import io.cucumber.java.Before;
 import org.example.systempom.base.BaseTest;
 import org.example.systempom.pages.AdminPage;
 import org.example.systempom.pages.LoginPage;
-import org.junit.Before;
-import org.junit.Test;
+import org.testng.annotations.Test;
 
-import static org.junit.Assert.assertTrue;
+import static org.testng.AssertJUnit.assertTrue;
+
 
 /**
  * JUnit system tests for the OrangeHRM Admin / System Users screen.

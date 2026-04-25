@@ -5,9 +5,9 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.example.pages.AdminPage;
-import org.openqa.selenium.WebDriver;
 
-import static org.junit.Assert.*;
+import static org.testng.AssertJUnit.assertTrue;
+
 
 public class AdminSteps {
 
