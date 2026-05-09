@@ -1,0 +1,11 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="UnitTest Suite" verbose="1">
+    <listeners>
+        <listener class-name="io.qameta.allure.testng.AllureTestNg"/>
+    </listeners>
+    <test name="Lucas Sequence Tests">
+        <classes>
+            <class name="org.example.LucasTest"/>
+        </classes>
+    </test>
+</suite>

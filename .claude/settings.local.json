@@ -4,7 +4,16 @@
       "Bash(grep -h \"^\\\\s*\\\\\\(Given\\\\|When\\\\|Then\\\\|And\\\\|But\\\\\\)\" src/test/resources/features/*.feature)",
       "Bash(grep -h \"@Given\\\\|@When\\\\|@Then\\\\|@And\\\\|@But\" src/test/java/org/example/steps/*.java)",
       "Bash(mvn test-compile:*)",
-      "Bash(java -version)"
+      "Bash(java -version)",
+      "Bash(Get-ChildItem -Path \"C:\\\\PC\\\\Riga Technical University\\\\2-semestr\\\\Testing and Software Quality\\\\TestingPlayground\" -Recurse -Force)",
+      "Bash(Select-Object FullName, PSIsContainer)",
+      "Bash(Sort-Object FullName)",
+      "PowerShell(Get-ChildItem -Path \"C:\\\\PC\\\\Riga Technical University\\\\2-semestr\\\\Testing and Software Quality\\\\TestingPlayground\" -Recurse | ForEach-Object { $_.FullName })",
+      "PowerShell(Get-ChildItem *)",
+      "Bash(\"/c/Users/Asus ROG/AppData/Local/Programs/IntelliJ IDEA Ultimate/plugins/maven/lib/maven3/bin/mvn\" --version)",
+      "Bash(\"/c/Users/Asus ROG/AppData/Local/Programs/IntelliJ IDEA Ultimate/plugins/maven/lib/maven3/bin/mvn\" wrapper:wrapper -Dmaven=3.9.9)",
+      "Bash(./mvnw test *)",
+      "Bash(mvn dependency:resolve -q)"
     ]
   }
 }

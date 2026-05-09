@@ -41,30 +41,56 @@
             <version>7.9.0</version>
             <scope>test</scope>
         </dependency>
+
+        <!-- Allure JUnit 5 -->
+        <dependency>
+            <groupId>io.qameta.allure</groupId>
+            <artifactId>allure-junit5</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- Allure TestNG -->
+        <dependency>
+            <groupId>io.qameta.allure</groupId>
+            <artifactId>allure-testng</artifactId>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>
         <plugins>
+            <!-- JUnit 5 provider: runs CalculatorTest + FibonacciTest -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.2.5</version>
+                <configuration>
+                    <excludes>
+                        <exclude>**/LucasTest.java</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+
+            <!-- TestNG provider via Failsafe, bound to the same test phase.
+                 Using Failsafe keeps its surefire-testng dependency isolated
+                 so the Surefire execution above stays on JUnit Platform. -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <version>3.2.5</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.apache.maven.surefire</groupId>
+                        <artifactId>surefire-testng</artifactId>
+                        <version>3.2.5</version>
+                    </dependency>
+                </dependencies>
                 <executions>
-                    <!-- Default execution: JUnit 5 tests (exclude TestNG class) -->
-                    <execution>
-                        <id>default-test</id>
-                        <configuration>
-                            <excludes>
-                                <exclude>**/LucasTest.java</exclude>
-                            </excludes>
-                        </configuration>
-                    </execution>
-                    <!-- TestNG execution via testng.xml -->
                     <execution>
                         <id>testng-suite</id>
                         <phase>test</phase>
                         <goals>
-                            <goal>test</goal>
+                            <goal>integration-test</goal>
                         </goals>
                         <configuration>
                             <suiteXmlFiles>
@@ -73,6 +99,11 @@
                         </configuration>
                     </execution>
                 </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>io.qameta.allure</groupId>
+                <artifactId>allure-maven</artifactId>
             </plugin>
         </plugins>
     </build>

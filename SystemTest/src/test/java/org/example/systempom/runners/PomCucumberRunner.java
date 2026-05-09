@@ -9,7 +9,8 @@ import io.cucumber.testng.CucumberOptions;
         plugin   = {
                 "pretty",
                 "html:target/cucumber-reports/pom-report.html",
-                "json:target/cucumber-reports/pom-report.json"
+                "json:target/cucumber-reports/pom-report.json",
+                "io.qameta.allure.cucumber7jvm.AllureCucumber7Jvm"
         },
         monochrome = true
 )

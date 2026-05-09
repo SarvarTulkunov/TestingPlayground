@@ -1,0 +1,20 @@
+[
+  {
+    "name": "Buddy",
+    "status": "available",
+    "category": {"id": 1, "name": "Dogs"},
+    "photoUrls": ["http://example.com/buddy.jpg"]
+  },
+  {
+    "name": "Whiskers",
+    "status": "pending",
+    "category": {"id": 2, "name": "Cats"},
+    "photoUrls": ["http://example.com/whiskers.jpg"]
+  },
+  {
+    "name": "Goldie",
+    "status": "sold",
+    "category": {"id": 3, "name": "Fish"},
+    "photoUrls": ["http://example.com/goldie.jpg"]
+  }
+]

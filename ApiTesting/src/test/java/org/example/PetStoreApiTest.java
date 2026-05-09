@@ -1,17 +1,24 @@
 package org.example;
 
+import io.qameta.allure.*;
+import io.qameta.allure.restassured.AllureRestAssured;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import static io.restassured.RestAssured.*;
 import static org.hamcrest.Matchers.*;
 
+@Epic("API Tests")
+@Feature("PetStore API")
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class PetStoreApiTest {
 
-    // Use a reproducible ID small enough to avoid int/long Hamcrest mismatch
+    private static final Logger log = LoggerFactory.getLogger(PetStoreApiTest.class);
+
     private static final int TEST_PET_ID = (int) (System.currentTimeMillis() % 100_000) + 100_000;
     private static long createdOrderId;
 
@@ -19,28 +26,29 @@ public class PetStoreApiTest {
     static void setup() {
         RestAssured.baseURI = "https://petstore.swagger.io/v2";
         RestAssured.useRelaxedHTTPSValidation();
+        RestAssured.filters(new AllureRestAssured());
+        log.info("PetStore API base URI set; pet ID for this run: {}", TEST_PET_ID);
     }
 
     @AfterAll
     static void cleanup() {
-        // Best-effort cleanup of the pet created during the test run
+        RestAssured.replaceFiltersWith(java.util.Collections.emptyList());
         try {
             given().delete("/pet/" + TEST_PET_ID);
+            log.info("Cleaned up test pet {}", TEST_PET_ID);
         } catch (Exception ignored) {}
     }
 
     // ==================== POSITIVE TESTS ====================
 
-    /**
-     * Test 1 – Positive
-     * Verify that searching pets by the "available" status returns HTTP 200,
-     * a JSON content-type, and a non-empty array whose first element actually
-     * carries the requested status.
-     */
     @Test
     @Order(1)
+    @Story("Find pets")
+    @Severity(SeverityLevel.NORMAL)
+    @Description("Verify that searching by 'available' status returns HTTP 200 and a non-empty JSON array")
     @DisplayName("Positive: GET /pet/findByStatus?status=available → 200, JSON array, status field present")
     void testFindPetsByValidStatus() {
+        log.info("GET /pet/findByStatus?status=available");
         given()
             .queryParam("status", "available")
         .when()
@@ -52,15 +60,14 @@ public class PetStoreApiTest {
             .body("[0].status", notNullValue());
     }
 
-    /**
-     * Test 2 – Positive
-     * Create a new pet with a known ID and verify the response mirrors
-     * every submitted field (id, name, status, category, photoUrls).
-     */
     @Test
     @Order(2)
+    @Story("Create pet")
+    @Severity(SeverityLevel.CRITICAL)
+    @Description("Create a new pet and verify the response mirrors all submitted fields")
     @DisplayName("Positive: POST /pet → 200, response contains all submitted fields")
     void testCreatePet() {
+        log.info("POST /pet — creating pet with id={}", TEST_PET_ID);
         String body = String.format("""
                 {
                     "id": %d,
@@ -86,15 +93,14 @@ public class PetStoreApiTest {
             .body("photoUrls",     not(empty()));
     }
 
-    /**
-     * Test 3 – Positive
-     * Retrieve the pet that was just created and confirm every stored field
-     * matches what was submitted.
-     */
     @Test
     @Order(3)
+    @Story("Get pet")
+    @Severity(SeverityLevel.CRITICAL)
+    @Description("Retrieve the pet by ID and verify stored fields match what was submitted")
     @DisplayName("Positive: GET /pet/{petId} → 200, returns correct pet data")
     void testGetPetById() {
+        log.info("GET /pet/{}", TEST_PET_ID);
         given()
         .when()
             .get("/pet/" + TEST_PET_ID)
@@ -106,15 +112,14 @@ public class PetStoreApiTest {
             .body("status", equalTo("available"));
     }
 
-    /**
-     * Test 4 – Positive
-     * Update the existing pet's name and status; verify the response reflects
-     * the new values and that the id is unchanged.
-     */
     @Test
     @Order(4)
+    @Story("Update pet")
+    @Severity(SeverityLevel.NORMAL)
+    @Description("Update pet name and status; verify the response reflects the new values")
     @DisplayName("Positive: PUT /pet → 200, updated name and status reflected in response")
     void testUpdatePet() {
+        log.info("PUT /pet — updating pet {}", TEST_PET_ID);
         String body = String.format("""
                 {
                     "id": %d,
@@ -137,15 +142,14 @@ public class PetStoreApiTest {
             .body("status", equalTo("sold"));
     }
 
-    /**
-     * Test 5 – Positive
-     * Place a store order for the pet and verify the response contains the
-     * expected petId, quantity, status, and a server-assigned order id.
-     */
     @Test
     @Order(5)
+    @Story("Place order")
+    @Severity(SeverityLevel.NORMAL)
+    @Description("Place a store order for the pet and verify all fields in the response")
     @DisplayName("Positive: POST /store/order → 200, order fields match submission")
     void testPlaceOrder() {
+        log.info("POST /store/order — placing order for pet {}", TEST_PET_ID);
         String body = String.format("""
                 {
                     "petId": %d,
@@ -172,19 +176,19 @@ public class PetStoreApiTest {
             .extract().response();
 
         createdOrderId = response.jsonPath().getLong("id");
+        log.info("Order created with id={}", createdOrderId);
     }
 
     // ==================== NEGATIVE TESTS ====================
 
-    /**
-     * Test 6 – Negative
-     * Requesting a pet with a very large ID that does not exist must return
-     * HTTP 404 and a JSON error body with "Pet not found" message.
-     */
     @Test
     @Order(6)
+    @Story("Get pet")
+    @Severity(SeverityLevel.NORMAL)
+    @Description("Requesting a non-existent pet ID must return 404 with 'Pet not found' message")
     @DisplayName("Negative: GET /pet/{nonExistentId} → 404 with 'Pet not found' message")
     void testGetNonExistentPet() {
+        log.info("GET /pet/999888777666555 — expecting 404");
         given()
         .when()
             .get("/pet/999888777666555")
@@ -194,14 +198,14 @@ public class PetStoreApiTest {
             .body("message", equalTo("Pet not found"));
     }
 
-    /**
-     * Test 7 – Negative
-     * Attempting to delete a pet that does not exist must return HTTP 404.
-     */
     @Test
     @Order(7)
+    @Story("Delete pet")
+    @Severity(SeverityLevel.NORMAL)
+    @Description("Deleting a non-existent pet must return HTTP 404")
     @DisplayName("Negative: DELETE /pet/{nonExistentId} → 404")
     void testDeleteNonExistentPet() {
+        log.info("DELETE /pet/999888777666444 — expecting 404");
         given()
         .when()
             .delete("/pet/999888777666444")
@@ -209,15 +213,14 @@ public class PetStoreApiTest {
             .statusCode(404);
     }
 
-    /**
-     * Test 8 – Negative
-     * Requesting a store order that does not exist must return HTTP 404
-     * and a JSON error body with "Order not found" message.
-     */
     @Test
     @Order(8)
+    @Story("Get order")
+    @Severity(SeverityLevel.NORMAL)
+    @Description("Requesting a non-existent order must return 404 with 'Order not found' message")
     @DisplayName("Negative: GET /store/order/{nonExistentId} → 404 with 'Order not found' message")
     void testGetNonExistentOrder() {
+        log.info("GET /store/order/999888777666 — expecting 404");
         given()
         .when()
             .get("/store/order/999888777666")
@@ -227,15 +230,14 @@ public class PetStoreApiTest {
             .body("message", equalTo("Order not found"));
     }
 
-    /**
-     * Test 9 – Negative
-     * Looking up a username that was never registered must return HTTP 404
-     * and a JSON error body with "User not found" message.
-     */
     @Test
     @Order(9)
+    @Story("Get user")
+    @Severity(SeverityLevel.NORMAL)
+    @Description("Looking up a non-existent username must return 404 with 'User not found' message")
     @DisplayName("Negative: GET /user/{nonExistentUsername} → 404 with 'User not found' message")
     void testGetNonExistentUser() {
+        log.info("GET /user/nonExistentUser99999 — expecting 404");
         given()
         .when()
             .get("/user/nonExistentUser99999")
@@ -245,14 +247,14 @@ public class PetStoreApiTest {
             .body("message", equalTo("User not found"));
     }
 
-    /**
-     * Test 10 – Negative
-     * Deleting a store order that does not exist must return HTTP 404.
-     */
     @Test
     @Order(10)
+    @Story("Delete order")
+    @Severity(SeverityLevel.NORMAL)
+    @Description("Deleting a non-existent store order must return HTTP 404")
     @DisplayName("Negative: DELETE /store/order/{nonExistentId} → 404")
     void testDeleteNonExistentOrder() {
+        log.info("DELETE /store/order/999777888666555 — expecting 404");
         given()
         .when()
             .delete("/store/order/999777888666555")

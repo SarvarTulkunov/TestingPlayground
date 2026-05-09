@@ -1,0 +1,6 @@
+dividend,divisor,expected,description
+10,2,5,positive by positive
+0,5,0,zero by positive
+-10,-2,5,negative by negative
+-10,2,-5,negative by positive
+7,2,3,non-integer result truncated

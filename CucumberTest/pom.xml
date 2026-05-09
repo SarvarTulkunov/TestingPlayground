@@ -66,6 +66,22 @@
             <version>${cucumber.version}</version>
             <scope>test</scope>
         </dependency>
+
+        <!-- Allure Cucumber 7 JVM -->
+        <!-- gherkin is excluded because allure-cucumber7-jvm:2.27.0 pulls gherkin:26.2.0
+             which constrains messages to <23.0.0, conflicting with cucumber 7.17.0 (messages:24.1.0).
+             Cucumber's own gherkin is used at runtime instead. -->
+        <dependency>
+            <groupId>io.qameta.allure</groupId>
+            <artifactId>allure-cucumber7-jvm</artifactId>
+            <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>io.cucumber</groupId>
+                    <artifactId>gherkin</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
     </dependencies>
 
     <build>
@@ -79,6 +95,11 @@
                         <include>**/CucumberRunner.java</include>
                     </includes>
                 </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>io.qameta.allure</groupId>
+                <artifactId>allure-maven</artifactId>
             </plugin>
         </plugins>
     </build>
